@@ -11,6 +11,7 @@ const mainMenuQuestions = [
             {value: 'add_role', name: 'Add Role'},
             {value: 'add_employee', name: 'Add Employee'},
             {value: 'update_employee_role', name: 'Update Employee Role'},
+            {value: 'quit', name: 'Quit'}
 
         ],
     },
