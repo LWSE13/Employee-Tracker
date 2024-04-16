@@ -1,21 +1,13 @@
 require('dotenv').config();
 const inquirer = require('inquirer');
-const { Client } = require('pg');
+const  Database  = require('./db/db.js');
 const {mainMenuQuestions,
     addDepartmentQuestions,
     addRoleQuestions,
     addEmployeeQuestions,
     updateEmployeeRoleQuestions} = require('./questions');
 
-const database = new Client({
-  user: process.env.DB_USER,
-  host: 'localhost',
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: 5432,
-});
-
-database.connect();
+    const database = new Database();
 
 const mainMenuSelect = () => {
     inquirer.prompt(mainMenuQuestions).then((answers) => {
@@ -42,8 +34,14 @@ const mainMenuSelect = () => {
                 viewAllEmployees();
                 break;
             case 'quit':
-                client.end();
+                database.end();
                 break;
         }
     });
 }
+
+
+// Call the methods and check the output
+database.viewAllDepartments();
+database.viewAllRoles();
+database.viewAllEmployees();
