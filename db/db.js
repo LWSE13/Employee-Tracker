@@ -1,45 +1,28 @@
-const mysql = require('mysql');
+const { Client } = require('pg');
 
 class Database {
     constructor(config) {
-        this.connection = mysql.createConnection(config);
+        this.client = new Client(config);
     }
 
     connect() {
-        return new Promise((resolve, reject) => {
-            this.connection.connect(err => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve();
-            });
-        });
+        return this.client.connect();
     }
 
     query(sql, args) {
-        return new Promise((resolve, reject) => {
-            this.connection.query(sql, args, (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows);
-            });
-        });
+        return this.client.query(sql, args);
     }
 
     close() {
-        return new Promise((resolve, reject) => {
-            this.connection.end(err => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve();
-            });
+        return this.client.end();
+    }
+
+    viewAllDepartments() {
+        return this.query('SELECT * FROM department').then((res) => {
+            console.table(res.rows);
         });
     }
 }
+
 
 module.exports = Database;

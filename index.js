@@ -7,7 +7,13 @@ const {mainMenuQuestions,
     addEmployeeQuestions,
     updateEmployeeRoleQuestions} = require('./questions');
 
-    const database = new Database();
+    const database = new Database({
+        user: process.env.DB_USER,
+        host: 'localhost',
+        database: process.env.DB_NAME,
+        password: process.env.DB_PASSWORD,
+        port: '5432'
+    });
 
 const mainMenuSelect = () => {
     inquirer.prompt(mainMenuQuestions).then((answers) => {
@@ -25,7 +31,7 @@ const mainMenuSelect = () => {
                 updateEmployeeRole();
                 break;
             case 'view_all_departments':
-                viewAllDepartments();
+                database.viewAllDepartments();
                 break;
             case 'view_all_roles':
                 viewAllRoles();
@@ -34,14 +40,10 @@ const mainMenuSelect = () => {
                 viewAllEmployees();
                 break;
             case 'quit':
-                database.end();
+                database.close();
                 break;
         }
     });
 }
 
-
-// Call the methods and check the output
-database.viewAllDepartments();
-database.viewAllRoles();
-database.viewAllEmployees();
+mainMenuSelect();
