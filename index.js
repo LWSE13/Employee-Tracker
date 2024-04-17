@@ -17,7 +17,9 @@ const {mainMenuQuestions,
 
 const mainMenuSelect = () => {
     inquirer.prompt(mainMenuQuestions).then((answers) => {
+        console.log(answers)
         switch(answers.mainMenu) {
+    
             case 'add_department':
                 addDepartment();
                 break;

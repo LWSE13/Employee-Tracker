@@ -1,12 +1,12 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
 class Database {
     constructor(config) {
-        this.client = new Client(config);
+        this.client = new Pool(config);
     }
 
     connect() {
-        return this.client.connect();
+        return this.client.connect().then(() => console.log('Connected to database'));
     }
 
     query(sql, args) {
@@ -18,6 +18,7 @@ class Database {
     }
 
     viewAllDepartments() {
+        console.log('Viewing all departments');
         return this.query('SELECT * FROM department').then((res) => {
             console.table(res.rows);
         });
