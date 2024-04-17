@@ -1,13 +1,13 @@
 require('dotenv').config();
 const inquirer = require('inquirer');
-const  Database  = require('./db/db.js');
+const  { Database, EmployeeDatabase }  = require('./db/db.js');
 const {mainMenuQuestions,
     addDepartmentQuestions,
     addRoleQuestions,
     addEmployeeQuestions,
     updateEmployeeRoleQuestions} = require('./questions');
 
-    const database = new Database({
+    const database = new EmployeeDatabase({
         user: process.env.DB_USER,
         host: 'localhost',
         database: process.env.DB_NAME,
@@ -17,7 +17,6 @@ const {mainMenuQuestions,
 
 const mainMenuSelect = () => {
     inquirer.prompt(mainMenuQuestions).then((answers) => {
-        console.log(answers)
         switch(answers.mainMenu) {
     
             case 'add_department':
@@ -34,12 +33,15 @@ const mainMenuSelect = () => {
                 break;
             case 'view_all_departments':
                 database.viewAllDepartments();
+                setTimeout(mainMenuSelect, 500);
                 break;
             case 'view_all_roles':
-                viewAllRoles();
+                database.viewAllRoles();
+                setTimeout(mainMenuSelect, 500);
                 break;
             case 'view_all_employees':
-                viewAllEmployees();
+                database.viewAllEmployees();
+                setTimeout(mainMenuSelect, 500);
                 break;
             case 'quit':
                 database.close();

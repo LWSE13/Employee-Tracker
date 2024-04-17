@@ -26,4 +26,31 @@ class Database {
 }
 
 
-module.exports = Database;
+class EmployeeDatabase extends Database {
+    constructor(config) {
+        super(config);
+    }
+
+    viewAllDepartments() {
+        console.log('Viewing all departments');
+        return this.query('SELECT * FROM department').then((res) => {
+            console.table(res.rows);
+        });
+    }
+
+    viewAllRoles() {
+        console.log('Viewing all roles');
+        return this.query('SELECT * FROM role').then((res) => {
+            console.table(res.rows);
+        });
+    }
+
+    viewAllEmployees() {
+        console.log('Viewing all employees');
+        return this.query('SELECT * FROM employee').then((res) => {
+            console.table(res.rows);
+        });
+    }
+}
+
+module.exports = { Database, EmployeeDatabase };
