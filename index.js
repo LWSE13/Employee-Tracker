@@ -59,12 +59,20 @@ const addDepartment = () => {
 }
 
 const addRole = () => {
-database.getDepartments().then((departments) => {
-    database.getDepartments
-    inquirer.prompt(addRoleQuestions).then((answers)=> {
-        database.addRole(answers.roleTitle, answers.roleSalary, answers.roleDepartment);
-    })
-})
+    database.getDepartments().then((result) => {
+        const departments = result.rows;
+
+      
+        const roleDepartmentQuestion = addRoleQuestions.find(question => question.name === 'roleDepartment');
+        roleDepartmentQuestion.choices = departments.map(department => ({
+            name: department.name,
+            value: department.id
+        }));
+
+        inquirer.prompt(addRoleQuestions).then((answers) => {
+            database.addRole(answers.roleTitle, answers.roleSalary, answers.roleDepartment);
+        });
+    });
 }
 
 mainMenuSelect();

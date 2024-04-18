@@ -94,7 +94,7 @@ class EmployeeDatabase extends Database {
     }
     
     addRole(roleTitle, roleSalary, roleDepartment) {
-        console.log(`Adding role: ${title}`);
+        console.log(`Adding role: ${roleTitle}`);
         return this.query(`
             INSERT INTO role (title, salary, department_id) 
             VALUES ($1, $2, $3)
@@ -103,7 +103,6 @@ class EmployeeDatabase extends Database {
         });
     }
     
-  
-}
+ 
 
 module.exports = { Database, EmployeeDatabase };
