@@ -70,7 +70,7 @@ class EmployeeDatabase extends Database {
                 CONCAT(manager.first_name, ' ', manager.last_name) AS manager_name 
 
             FROM employee 
-            
+
             JOIN role ON employee.role_id = role.id 
             JOIN department ON role.department_id = department.id 
             LEFT JOIN employee AS manager ON employee.manager_id = manager.id
@@ -78,6 +78,32 @@ class EmployeeDatabase extends Database {
             console.table(res.rows);
         });
     }
+
+    getDepartments() {
+        return this.query('SELECT * FROM department');
+    }
+
+    addDepartment(departmentName) {
+        console.log(`Adding department: ${departmentName}`);
+        return this.query(`
+            INSERT INTO department (name) 
+            VALUES ($1)
+        `, [departmentName]).then((res) => {
+            console.log('Department added successfully');
+        });
+    }
+    
+    addRole(roleTitle, roleSalary, roleDepartment) {
+        console.log(`Adding role: ${title}`);
+        return this.query(`
+            INSERT INTO role (title, salary, department_id) 
+            VALUES ($1, $2, $3)
+        `, [roleTitle, roleSalary, roleDepartment]).then((res) => {
+            console.log('Role added successfully');
+        });
+    }
+    
+  
 }
 
 module.exports = { Database, EmployeeDatabase };

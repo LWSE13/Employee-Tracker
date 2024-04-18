@@ -26,7 +26,7 @@ const mainMenuSelect = () => {
                 addRole();
                 break;
             case 'add_employee':
-                addEmployee();
+                database.addEmployee();
                 break;
             case 'update_employee_role':
                 updateEmployeeRole();
@@ -48,6 +48,23 @@ const mainMenuSelect = () => {
                 break;
         }
     });
+}
+
+
+
+const addDepartment = () => {
+    inquirer.prompt(addDepartmentQuestions).then((answers) => {
+        database.addDepartment(answers.departmentName);
+    })
+}
+
+const addRole = () => {
+database.getDepartments().then((departments) => {
+    database.getDepartments
+    inquirer.prompt(addRoleQuestions).then((answers)=> {
+        database.addRole(answers.roleTitle, answers.roleSalary, answers.roleDepartment);
+    })
+})
 }
 
 mainMenuSelect();

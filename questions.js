@@ -46,7 +46,7 @@ const addRoleQuestions = [
         type: 'list',
         name: 'roleDepartment',
         message: 'What is the department id of the role?',
-        choices: []
+        choices: departments.map(department => department.name)
     }
 ]
 
