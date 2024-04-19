@@ -20,28 +20,39 @@ const mainMenuSelect = () => {
         switch(answers.mainMenu) {
     
             case 'add_department':
-                addDepartment();
+                addDepartment().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'add_role':
-                addRole();
+                addRole().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'add_employee':
-                addEmployee();
+                addEmployee().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'update_employee_role':
-                updateEmployeeRole();
+                updateEmployeeRole().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'view_all_departments':
-                database.viewAllDepartments();
-                setTimeout(mainMenuSelect, 500);
+                database.viewAllDepartments().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'view_all_roles':
-                database.viewAllRoles();
-                setTimeout(mainMenuSelect, 500);
+                database.viewAllRoles().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'view_all_employees':
-                database.viewAllEmployees();
-                setTimeout(mainMenuSelect, 500);
+                database.viewAllEmployees().then(() => {
+                    mainMenuSelect();
+                });
                 break;
             case 'quit':
                 database.close();
@@ -53,13 +64,13 @@ const mainMenuSelect = () => {
 
 
 const addDepartment = () => {
-    inquirer.prompt(addDepartmentQuestions).then((answers) => {
-        database.addDepartment(answers.departmentName);
+    return inquirer.prompt(addDepartmentQuestions).then((answers) => {
+        return database.addDepartment(answers.departmentName);
     })
 }
 
 const addRole = () => {
-    database.getDepartments().then((result) => {
+    return database.getDepartments().then((result) => {
         const departments = result.rows;
 
       
@@ -69,14 +80,14 @@ const addRole = () => {
             value: department.id
         }));
 
-        inquirer.prompt(addRoleQuestions).then((answers) => {
-            database.addRole(answers.roleTitle, answers.roleSalary, answers.roleDepartment);
+        return inquirer.prompt(addRoleQuestions).then((answers) => {
+            return database.addRole(answers.roleTitle, answers.roleSalary, answers.roleDepartment);
         });
     });
 }
 
 const addEmployee = () => {
-    Promise.all([database.getRoles(), database.getEmployees()]).then(([roleResult, employeeResult]) => {
+   return Promise.all([database.getRoles(), database.getEmployees()]).then(([roleResult, employeeResult]) => {
         const roles = roleResult.rows;
         const employees = employeeResult.rows;
 
@@ -86,14 +97,14 @@ const addEmployee = () => {
         const employeeManagerQuestion = addEmployeeQuestions.find(question => question.name === 'employeeManager');
         employeeManagerQuestion.choices = employees.map(employee => ({ name: `${employee.first_name} ${employee.last_name}`, value: employee.id }));
 
-        inquirer.prompt(addEmployeeQuestions).then((answers) => {
-            database.addEmployee(answers.employeeFirstName, answers.employeeLastName, answers.employeeRole, answers.employeeManager);
+        return inquirer.prompt(addEmployeeQuestions).then((answers) => {
+            return database.addEmployee(answers.employeeFirstName, answers.employeeLastName, answers.employeeRole, answers.employeeManager);
         });
     });
 }
 
 const updateEmployeeRole = () => {
-    Promise.all([database.getEmployees(), database.getRoles()]).then(([employeeResult, roleResult]) => {
+   return Promise.all([database.getEmployees(), database.getRoles()]).then(([employeeResult, roleResult]) => {
         const employees = employeeResult.rows;
         const roles = roleResult.rows;
 
@@ -103,8 +114,8 @@ const updateEmployeeRole = () => {
         const roleIdQuestion = updateEmployeeRoleQuestions.find(question => question.name === 'roleId');
         roleIdQuestion.choices = roles.map(role => ({ name: role.title, value: role.id }));
 
-        inquirer.prompt(updateEmployeeRoleQuestions).then((answers) => {
-            database.updateEmployeeRole(answers.employeeId, answers.roleId);
+       return inquirer.prompt(updateEmployeeRoleQuestions).then((answers) => {
+           return database.updateEmployeeRole(answers.employeeId, answers.roleId);
         });
     });
 }

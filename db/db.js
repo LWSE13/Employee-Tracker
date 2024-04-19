@@ -16,13 +16,6 @@ class Database {
     close() {
         return this.client.end();
     }
-
-    viewAllDepartments() {
-        console.log('Viewing all departments');
-        return this.query('SELECT * FROM department').then((res) => {
-            console.table(res.rows);
-        });
-    }
 }
 
 
@@ -38,6 +31,7 @@ class EmployeeDatabase extends Database {
             FROM department
         `).then((res) => {
             console.table(res.rows);
+            return res.rows;
         });
     }
     
@@ -55,6 +49,7 @@ class EmployeeDatabase extends Database {
             JOIN role ON role.department_id = department.id
         `).then((res) => {
             console.table(res.rows);
+            return res.rows;
         });
     }
     
@@ -76,6 +71,7 @@ class EmployeeDatabase extends Database {
             LEFT JOIN employee AS manager ON employee.manager_id = manager.id
         `).then((res) => {
             console.table(res.rows);
+            return res.rows;
         });
     }
 
