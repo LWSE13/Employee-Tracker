@@ -83,6 +83,14 @@ class EmployeeDatabase extends Database {
         return this.query('SELECT * FROM department');
     }
 
+    getRoles() {
+        return this.query('SELECT * FROM role');
+    }
+
+    getEmployees() {
+        return this.query('SELECT * FROM employee');
+    }
+
     addDepartment(departmentName) {
         console.log(`Adding department: ${departmentName}`);
         return this.query(`
@@ -103,6 +111,26 @@ class EmployeeDatabase extends Database {
         });
     }
     
- 
+    addEmployee(employeeFirstName, employeeLastName, employeeRole, employeeManager) {
+        console.log(`Adding employee: ${employeeFirstName} ${employeeLastName}`);
+        return this.query(`
+            INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+            VALUES ($1, $2, $3, $4)
+        `, [employeeFirstName, employeeLastName, employeeRole, employeeManager]).then((res) => {
+            console.log('Employee added successfully');
+        });
+    }
+    
+    updateEmployeeRole(employee_id, role_id) {
+        console.log(`Updating employee id: ${employee_id}`);
+        return this.query(`
+            UPDATE employee 
+            SET role_id = $1 
+            WHERE id = $2
+        `, [role_id, employee_id]).then((res) => {
+            console.log('Employee updated successfully');
+        });
+    }
+}
 
 module.exports = { Database, EmployeeDatabase };

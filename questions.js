@@ -45,7 +45,7 @@ const addRoleQuestions = [
     {
         type: 'list',
         name: 'roleDepartment',
-        message: 'What is the department id of the role?',
+        message: 'What is the department of the role?',
         choices: []
     }
 ]
@@ -64,13 +64,13 @@ const addEmployeeQuestions = [
     {
         type: 'list',
         name: 'employeeRole',
-        message: 'What is the role id of the employee?',
+        message: 'What is the role of the employee?',
         choices: []
     },
     {
         type: 'list',
         name: 'employeeManager',
-        message: 'What is the manager id of the employee?',
+        message: 'Who is the manager of the employee?',
         choices: []
     }
 ]
